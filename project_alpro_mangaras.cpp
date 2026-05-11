@@ -136,22 +136,39 @@ int main(){
     int menu;
      
     do {
-        cout << "\n== Manajemen BPJS Rumah Sakit ==" << endl;
-        cout << "MENU UTAMA" << endl;
-        cout << " 1. Input data BPJS" << endl;
-        cout << " 2. Tampilkan data BPJS (sorted)" << endl;
-        cout << " 3. Cari BPJS berdasarkan id" << endl;
-        cout << " 4. Ubah detail BPJS" << endl;
-        cout << " 5. Simpan dan keluar" << endl;
-        cout << "Pilih menu: ";
-        cin >> menu;
+        
+            cout << "\n== Manajemen BPJS Rumah Sakit ==" << endl;
+            cout << "MENU UTAMA" << endl;
+            cout << " 1. Input data BPJS" << endl;
+            cout << " 2. Tampilkan data BPJS (sorted)" << endl;
+            cout << " 3. Cari BPJS berdasarkan id" << endl;
+            cout << " 4. Ubah detail BPJS" << endl;
+            cout << " 5. Simpan dan keluar" << endl;
+            cout << "Pilih menu: ";
+            if (!(cin >> menu)) {
+                cout << "Error: Masukkan angka (1-5)!" << endl;
+                cin.clear(); 
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+                continue; 
+            }
+            if (menu < 1 || menu > 5) {
+            cout << "Pilihan tidak valid! Coba lagi." << endl;
+            continue; 
+            }
 
         switch (menu){
-            case 1: {
-                    int jum_baru;
-                    cout << "\n===== INPUT DATA BPJS =====" << endl;
-                    cout << "Berapa banyak data? ";
-                    cin >> jum_baru;
+            case 1: {  
+                int jum_baru;
+                cout << "\nBerapa banyak data? ";
+                cin >> jum_baru;
+
+                if (cin.fail() || jum_baru < 1 || (total_bpjs + jum_baru) > 100) {
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    cout << "Input tidak valid atau kapasitas penuh (Maks 100)!" << endl;
+                    break; 
+                }
+
                     for (int j = 0; j < jum_baru; j++) {
                         int p = total_bpjs;
                         cout << "\nData ke-" << p + 1 << ":\n";
@@ -260,4 +277,7 @@ int main(){
                 cout << "Pilihan tidak valid! Coba lagi." << endl;
             }
         } 
-    }while (menu != 5);    return 0;}
+    }while (menu != 5);   
+    
+    return 0;
+}
