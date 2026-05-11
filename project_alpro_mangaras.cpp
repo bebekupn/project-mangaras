@@ -239,31 +239,34 @@ int main(){
             break;
             }
             case 4:{
-                cout << "Fitur ubah detail BPJS masih dalam pengembangan" << endl;
-                break;
-            //     int idUbah, stokBaru, hargaBaru;
-            //     string namaBaru;
-            //     bool found = false;
+            if (total_bpjs == 0) {
+                cout << "Data masih kosong! Tidak ada yang bisa diubah." << endl;
+            } else {
+                string cari;
+                cout << "\n===== UBAH DETAIL DATA BPJS =====" << endl;
+                cout << "Masukkan No BPJS yang ingin diubah: ";
+                cin >> cari;
 
-            //     cout << "\n===== UBAH DETAIL PRODUK (SELAIN ID)=====" << endl;
-            //     cout << "[NOTE]: Tidak boleh mengubah ID Produk sebelumnya!\n";
-            //     cout << "\nMasukkan id produk yang ingin diubah: "; cin >> idUbah;
+                int hasil = binarySearch(bpjs1, 0, total_bpjs - 1, cari);
 
-            //     for (int a = 0; a < total_bpjs; a++) {
-            //         for (int b = 0; b < bpjs1[a].jum_kategori; b++) {
-            //             for (int c = 0; c < bpjs1[a].kategori1[b].jum_produk; c++) {
-            //                 if (bpjs1[a].kategori1[b].produk[c].id == idUbah) {
-            //                     cout << "Data ditemukan!\n"; 
-            //                     cout << "Masukkan Nama Baru: "; getline(cin >> ws, bpjs1[a].kategori1[b].produk[c].nama);
-            //                     cout << "Stok Baru: "; cin >> bpjs1[a].kategori1[b].produk[c].stok;
-            //                     cout << "Harga Baru: "; cin >> bpjs1[a].kategori1[b].produk[c].harga;
-            //                     found = true;
-            //                     break; 
-            //                 }
-            //             }
-            //         }
-            //     }
-            //     if (!found) cout << "ID tidak ditemukan di seluruh rak!\n";
+                if (hasil != -1) {
+                    cout << "Data ditemukan! Silakan masukkan data baru." << endl;
+                    BPJS *ptr = &bpjs1[hasil];
+
+                    cout << "No BPJS       : " << ptr->no_bpjs << " (ID tidak dapat diubah)" << endl;
+                    cout << "Nama Baru     : "; getline(cin >> ws, ptr->nama);
+                    cout << "NIK Baru      : "; cin >> ptr->nik;
+                    cout << "Tempat Lahir  : "; getline(cin >> ws, ptr->tempat_lahir);
+                    cout << "Tanggal Lahir : "; getline(cin >> ws, ptr->tanggal_lahir);
+                    cout << "Alamat Baru   : "; getline(cin >> ws, ptr->alamat);
+                    cout << "No HP Baru    : "; cin >> ptr->no_hp;
+                    cout << "\nData berhasil diperbarui!" << endl;
+
+                    simpanFile("data_bpjs.txt");
+                } else {
+                    cout << "Data dengan No BPJS '" << cari << "' tidak ditemukan." << endl;
+                }
+            }
             break;
         }
 
