@@ -221,9 +221,6 @@ void UbahDetailBPJS() {
     }
 }
 
-// ============================================================
-// FUNGSI BARU: Hapus Data Pasien BPJS
-// ============================================================
 void HapusData() {
     system("cls");
     if (total_bpjs == 0) {
@@ -236,7 +233,6 @@ void HapusData() {
     cout << "Masukkan No BPJS yang ingin dihapus: ";
     cin >> cari;
 
-    // Cari data menggunakan binary search (array sudah terurut)
     int hasil = binarySearch(bpjs1, 0, total_bpjs - 1, cari);
 
     if (hasil == -1) {
@@ -244,7 +240,6 @@ void HapusData() {
         return;
     }
 
-    // Tampilkan data yang akan dihapus
     BPJS *ptr = &bpjs1[hasil];
     cout << "\nData yang akan dihapus:" << endl;
     cout << "  No BPJS      : " << ptr->no_bpjs << endl;
@@ -255,7 +250,6 @@ void HapusData() {
     cout << "  Alamat       : " << ptr->alamat << endl;
     cout << "  No HP        : " << ptr->no_hp << endl;
 
-    // Konfirmasi penghapusan
     char konfirmasi;
     cout << "\nApakah Anda yakin ingin menghapus data ini? (y/n): ";
     cin >> konfirmasi;
@@ -265,20 +259,16 @@ void HapusData() {
         return;
     }
 
-    // Geser semua elemen setelah index 'hasil' ke kiri satu posisi
-    // Ini menimpa elemen yang dihapus dan menutup celah di array
     for (int i = hasil; i < total_bpjs - 1; i++) {
         bpjs1[i] = bpjs1[i + 1];
     }
 
-    // Kurangi counter dan kosongkan slot terakhir yang sudah tidak terpakai
     total_bpjs--;
-    bpjs1[total_bpjs] = BPJS(); // reset slot terakhir ke nilai default
+    bpjs1[total_bpjs] = BPJS(); 
 
     cout << "\nData dengan No BPJS '" << cari << "' berhasil dihapus!" << endl;
     cout << "Total data sekarang: " << total_bpjs << " pasien." << endl;
 
-    // Simpan perubahan ke file
     simpanFile("data_bpjs.txt");
 }
 
@@ -296,8 +286,8 @@ int main() {
         cout << " 2. Tampilkan data BPJS (sorted)" << endl;
         cout << " 3. Cari BPJS berdasarkan id" << endl;
         cout << " 4. Ubah detail BPJS" << endl;
-        cout << " 5. Hapus data BPJS" << endl;       // <-- menu baru
-        cout << " 6. Simpan dan keluar" << endl;      // <-- digeser dari 5 ke 6
+        cout << " 5. Hapus data BPJS" << endl;
+        cout << " 6. Simpan dan keluar" << endl;
         cout << "Pilih menu: ";
         if (!(cin >> menu)) {
             cout << "Error: Masukkan angka (1-6)!" << endl;
@@ -324,7 +314,7 @@ int main() {
                 break;
             }
             case 5: {
-                HapusData();        // <-- fungsi hapus dipanggil di sini
+                HapusData();
                 break;
             }
             case 6: {
