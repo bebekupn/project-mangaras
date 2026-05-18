@@ -48,32 +48,32 @@ void muatFile(const string &namaFile) {
         BPJS *ptr = &bpjs1[i];
         string line;
         getline(fin, line);
-        
+
         size_t pos = 0;
         pos = line.find('|');
         ptr->no_bpjs = line.substr(0, pos);
         line.erase(0, pos + 1);
-        
+
         pos = line.find('|');
         ptr->nik = line.substr(0, pos);
         line.erase(0, pos + 1);
-        
+
         pos = line.find('|');
         ptr->nama = line.substr(0, pos);
         line.erase(0, pos + 1);
-        
+
         pos = line.find('|');
         ptr->tempat_lahir = line.substr(0, pos);
         line.erase(0, pos + 1);
-        
+
         pos = line.find('|');
         ptr->tanggal_lahir = line.substr(0, pos);
         line.erase(0, pos + 1);
-        
+
         pos = line.find('|');
         ptr->alamat = line.substr(0, pos);
         line.erase(0, pos + 1);
-        
+
         ptr->no_hp = line;
     }
     fin.close();
@@ -110,151 +110,184 @@ bool cekNoBPJSSudahAda(string noBPJS) {
 }
 
 void InputData() {
-                system("cls");
-                int jum_baru;
-                cout << "\nBerapa banyak data? ";
-                cin >> jum_baru;
+    system("cls");
+    int jum_baru;
+    cout << "\nBerapa banyak data? ";
+    cin >> jum_baru;
 
-                if (cin.fail() || jum_baru < 1 || (total_bpjs + jum_baru) > 100) {
-                    cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                    cout << "Input tidak valid atau kapasitas penuh (Maks 100)!" << endl;
-                    return; 
-                }
+    if (cin.fail() || jum_baru < 1 || (total_bpjs + jum_baru) > 100) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Input tidak valid atau kapasitas penuh (Maks 100)!" << endl;
+        return;
+    }
 
-                for (int j = 0; j < jum_baru; j++) {
-                    int p = total_bpjs;
-                    cout << "\nData ke-" << p + 1 << ":\n";
-                    
-                    string noBpjsBaru;
-                    bool noBpjsValid = false;
-                    while (!noBpjsValid) {
-                        cout << "No BPJS: "; 
-                        cin >> noBpjsBaru;
-                        if (cekNoBPJSSudahAda(noBpjsBaru)) {
-                            cout << "   ERROR: No BPJS '" << noBpjsBaru << "' sudah terdaftar! Coba nomor lain." << endl;
-                        } else {
-                            bpjs1[p].no_bpjs = noBpjsBaru;
-                            noBpjsValid = true;
-                        }
-                    }
-                    cout << "Nama   : "; getline(cin >> ws, bpjs1[p].nama);
-                    cout << "NIK    : "; cin >> bpjs1[p].nik;
-                    cout << "tempat lahir :"; getline(cin >> ws, bpjs1[p].tempat_lahir);
-                    cout << "tanggal lahir :"; getline(cin >> ws, bpjs1[p].tanggal_lahir); 
-                    cout << "Alamat : "; getline(cin >> ws, bpjs1[p].alamat);
-                    cout << "No HP  : "; cin >> bpjs1[p].no_hp;
-                    total_bpjs++;
-                }
-                bubbleSort(bpjs1, total_bpjs);
-                cout << "\nData berhasil disimpan di memori!" << endl;
-                simpanFile("data_bpjs.txt");     
+    for (int j = 0; j < jum_baru; j++) {
+        int p = total_bpjs;
+        cout << "\nData ke-" << p + 1 << ":\n";
 
+        string noBpjsBaru;
+        bool noBpjsValid = false;
+        while (!noBpjsValid) {
+            cout << "No BPJS: ";
+            cin >> noBpjsBaru;
+            if (cekNoBPJSSudahAda(noBpjsBaru)) {
+                cout << "   ERROR: No BPJS '" << noBpjsBaru << "' sudah terdaftar! Coba nomor lain." << endl;
+            } else {
+                bpjs1[p].no_bpjs = noBpjsBaru;
+                noBpjsValid = true;
+            }
+        }
+        cout << "Nama   : "; getline(cin >> ws, bpjs1[p].nama);
+        cout << "NIK    : "; cin >> bpjs1[p].nik;
+        cout << "tempat lahir :"; getline(cin >> ws, bpjs1[p].tempat_lahir);
+        cout << "tanggal lahir :"; getline(cin >> ws, bpjs1[p].tanggal_lahir);
+        cout << "Alamat : "; getline(cin >> ws, bpjs1[p].alamat);
+        cout << "No HP  : "; cin >> bpjs1[p].no_hp;
+        total_bpjs++;
+    }
+    bubbleSort(bpjs1, total_bpjs);
+    cout << "\nData berhasil disimpan di memori!" << endl;
+    simpanFile("data_bpjs.txt");
 }
 
 void TampilkanData() {
-                system("cls");
-                if(total_bpjs == 0){
-                    cout << "data masih kosong" << endl;
-                } else{
-                    cout << "\n===== DAFTAR PASIEN BPJS (SORTED) =====" << endl;
-                    for (int i = 0; i < total_bpjs; i++) {
-                        BPJS *ptr = &bpjs1[i];
-                        cout << i + 1 << ". [" << ptr->no_bpjs << "] " << ptr->nama << " - " << ptr->alamat << endl;
-                        cout << "   " << "tempat lahir :" << ptr->tempat_lahir << endl;
-                        cout << "   " << "tanggal lahir :" << ptr->tanggal_lahir << endl;
-                        cout << "   " << "no hp :" << ptr->no_hp << endl;
-                    }
-                }
-
+    system("cls");
+    if (total_bpjs == 0) {
+        cout << "Data masih kosong" << endl;
+    } else {
+        cout << "\n===== DAFTAR PASIEN BPJS (SORTED) =====" << endl;
+        for (int i = 0; i < total_bpjs; i++) {
+            BPJS *ptr = &bpjs1[i];
+            cout << i + 1 << ". [" << ptr->no_bpjs << "] " << ptr->nama << " - " << ptr->alamat << endl;
+            cout << "   " << "tempat lahir :" << ptr->tempat_lahir << endl;
+            cout << "   " << "tanggal lahir :" << ptr->tanggal_lahir << endl;
+            cout << "   " << "no hp :" << ptr->no_hp << endl;
+        }
+    }
 }
 
 void CariBPJS() {
-                system("cls");
-                if(total_bpjs == 0){
-                    cout << "data masih kosong" << endl;
-                } else{
-                    string cari;
-                    cout << "Masukkan No BPJS yang dicari: ";
-                    cin >> cari;
-                    int hasil = binarySearch(bpjs1, 0, total_bpjs - 1, cari);
-                    if (hasil != -1) {
-                        cout << "Data Ditemukan! "<< endl;
-                        BPJS *ptr = &bpjs1[hasil];
-                        cout << hasil + 1 << ". [" << ptr->no_bpjs << "] " << ptr->nama << " - " << ptr->alamat << endl;
-                        cout << "   " << "tempat lahir :" << ptr->tempat_lahir << endl;
-                        cout << "   " << "tanggal lahir :" << ptr->tanggal_lahir << endl;
-                        cout << "   " << "no hp :" << ptr->no_hp << endl;
-                    } else {
-                        cout << "Data tidak ditemukan." << endl;
-                    }
-                }
-    
+    system("cls");
+    if (total_bpjs == 0) {
+        cout << "Data masih kosong" << endl;
+    } else {
+        string cari;
+        cout << "Masukkan No BPJS yang dicari: ";
+        cin >> cari;
+        int hasil = binarySearch(bpjs1, 0, total_bpjs - 1, cari);
+        if (hasil != -1) {
+            cout << "Data Ditemukan! " << endl;
+            BPJS *ptr = &bpjs1[hasil];
+            cout << hasil + 1 << ". [" << ptr->no_bpjs << "] " << ptr->nama << " - " << ptr->alamat << endl;
+            cout << "   " << "tempat lahir :" << ptr->tempat_lahir << endl;
+            cout << "   " << "tanggal lahir :" << ptr->tanggal_lahir << endl;
+            cout << "   " << "no hp :" << ptr->no_hp << endl;
+        } else {
+            cout << "Data tidak ditemukan." << endl;
+        }
+    }
 }
 
 void UbahDetailBPJS() {
-                system("cls");
-                if (total_bpjs == 0) {
-                    cout << "Data masih kosong! Tidak ada yang bisa diubah." << endl;
-                } else {
-                    string cari;
-                    cout << "\n===== UBAH DETAIL DATA BPJS =====" << endl;
-                    cout << "Masukkan No BPJS yang ingin diubah: ";
-                    cin >> cari;
+    system("cls");
+    if (total_bpjs == 0) {
+        cout << "Data masih kosong! Tidak ada yang bisa diubah." << endl;
+    } else {
+        string cari;
+        cout << "\n===== UBAH DETAIL DATA BPJS =====" << endl;
+        cout << "Masukkan No BPJS yang ingin diubah: ";
+        cin >> cari;
 
-                    int hasil = binarySearch(bpjs1, 0, total_bpjs - 1, cari);
+        int hasil = binarySearch(bpjs1, 0, total_bpjs - 1, cari);
 
-                    if (hasil != -1) {
-                        cout << "Data ditemukan! Silakan masukkan data baru." << endl;
-                        BPJS *ptr = &bpjs1[hasil];
+        if (hasil != -1) {
+            cout << "Data ditemukan! Silakan masukkan data baru." << endl;
+            BPJS *ptr = &bpjs1[hasil];
 
-                        cout << "No BPJS       : " << ptr->no_bpjs << " (ID tidak dapat diubah)" << endl;
-                        cout << "Nama Baru     : "; getline(cin >> ws, ptr->nama);
-                        cout << "NIK Baru      : "; cin >> ptr->nik;
-                        cout << "Tempat Lahir  : "; getline(cin >> ws, ptr->tempat_lahir);
-                        cout << "Tanggal Lahir : "; getline(cin >> ws, ptr->tanggal_lahir);
-                        cout << "Alamat Baru   : "; getline(cin >> ws, ptr->alamat);
-                        cout << "No HP Baru    : "; cin >> ptr->no_hp;
-                        cout << "\nData berhasil diperbarui!" << endl;
+            cout << "No BPJS       : " << ptr->no_bpjs << " (ID tidak dapat diubah)" << endl;
+            cout << "Nama Baru     : "; getline(cin >> ws, ptr->nama);
+            cout << "NIK Baru      : "; cin >> ptr->nik;
+            cout << "Tempat Lahir  : "; getline(cin >> ws, ptr->tempat_lahir);
+            cout << "Tanggal Lahir : "; getline(cin >> ws, ptr->tanggal_lahir);
+            cout << "Alamat Baru   : "; getline(cin >> ws, ptr->alamat);
+            cout << "No HP Baru    : "; cin >> ptr->no_hp;
+            cout << "\nData berhasil diperbarui!" << endl;
 
-                        simpanFile("data_bpjs.txt");
-                    } else {
-                        cout << "Data dengan No BPJS '" << cari << "' tidak ditemukan." << endl;
-                    }
-                }
+            simpanFile("data_bpjs.txt");
+        } else {
+            cout << "Data dengan No BPJS '" << cari << "' tidak ditemukan." << endl;
+        }
+    }
+}
 
-} 
+// ============================================================
+// FUNGSI BARU: Hapus Data Pasien BPJS
+// ============================================================
+void HapusData() {
+    system("cls");
+    if (total_bpjs == 0) {
+        cout << "Data masih kosong! Tidak ada yang bisa dihapus." << endl;
+        return;
+    }
 
+    string cari;
+    cout << "\n===== HAPUS DATA PASIEN BPJS =====" << endl;
+    cout << "Masukkan No BPJS yang ingin dihapus: ";
+    cin >> cari;
 
+    // Cari data menggunakan binary search (array sudah terurut)
+    int hasil = binarySearch(bpjs1, 0, total_bpjs - 1, cari);
 
+    if (hasil == -1) {
+        cout << "Data dengan No BPJS '" << cari << "' tidak ditemukan." << endl;
+        return;
+    }
 
-int main(){
-    //string username, password;
-    //int salah = 0;
-    // do{
-    //     cout << "== login section ==" << endl;
-    //     cout << "username: ";
-    //     getline(cin, username);
-    //     cout << "password: ";
-    //     getline(cin, password);
-    //     if (username == "admin" && password == "admin123"){
-    //         cout << "Login successful!" << endl;
-    //     } else {
-    //         salah ++ ;
-    //         cout << "Login failed. Invalid username or password." << endl;
-    //     }   
-    // }while (salah < 3 && salah != 0);
-    // if (salah == 3){
-    //     cout << "Too many failed login attempts. Access denied." << endl;
-    //     return 0;
-    // }
+    // Tampilkan data yang akan dihapus
+    BPJS *ptr = &bpjs1[hasil];
+    cout << "\nData yang akan dihapus:" << endl;
+    cout << "  No BPJS      : " << ptr->no_bpjs << endl;
+    cout << "  Nama         : " << ptr->nama << endl;
+    cout << "  NIK          : " << ptr->nik << endl;
+    cout << "  Tempat Lahir : " << ptr->tempat_lahir << endl;
+    cout << "  Tanggal Lahir: " << ptr->tanggal_lahir << endl;
+    cout << "  Alamat       : " << ptr->alamat << endl;
+    cout << "  No HP        : " << ptr->no_hp << endl;
 
+    // Konfirmasi penghapusan
+    char konfirmasi;
+    cout << "\nApakah Anda yakin ingin menghapus data ini? (y/n): ";
+    cin >> konfirmasi;
+
+    if (konfirmasi != 'y' && konfirmasi != 'Y') {
+        cout << "Penghapusan dibatalkan." << endl;
+        return;
+    }
+
+    // Geser semua elemen setelah index 'hasil' ke kiri satu posisi
+    // Ini menimpa elemen yang dihapus dan menutup celah di array
+    for (int i = hasil; i < total_bpjs - 1; i++) {
+        bpjs1[i] = bpjs1[i + 1];
+    }
+
+    // Kurangi counter dan kosongkan slot terakhir yang sudah tidak terpakai
+    total_bpjs--;
+    bpjs1[total_bpjs] = BPJS(); // reset slot terakhir ke nilai default
+
+    cout << "\nData dengan No BPJS '" << cari << "' berhasil dihapus!" << endl;
+    cout << "Total data sekarang: " << total_bpjs << " pasien." << endl;
+
+    // Simpan perubahan ke file
+    simpanFile("data_bpjs.txt");
+}
+
+int main() {
     cout << "Login successful!" << endl;
     muatFile("data_bpjs.txt");
     int menu;
-     
+
     do {
-        //MENU UTAMA
         system("pause");
         system("cls");
         cout << "\n== Manajemen BPJS Rumah Sakit ==" << endl;
@@ -263,45 +296,49 @@ int main(){
         cout << " 2. Tampilkan data BPJS (sorted)" << endl;
         cout << " 3. Cari BPJS berdasarkan id" << endl;
         cout << " 4. Ubah detail BPJS" << endl;
-        cout << " 5. Simpan dan keluar" << endl;
+        cout << " 5. Hapus data BPJS" << endl;       // <-- menu baru
+        cout << " 6. Simpan dan keluar" << endl;      // <-- digeser dari 5 ke 6
         cout << "Pilih menu: ";
         if (!(cin >> menu)) {
-            cout << "Error: Masukkan angka (1-5)!" << endl;
-            cin.clear(); 
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
-            continue; 
+            cout << "Error: Masukkan angka (1-6)!" << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            continue;
         }
 
-        switch (menu){
+        switch (menu) {
             case 1: {
-                InputData();                      
+                InputData();
                 break;
             }
             case 2: {
                 TampilkanData();
                 break;
-            } 
-            
+            }
             case 3: {
                 CariBPJS();
                 break;
             }
-            case 4:{
+            case 4: {
                 UbahDetailBPJS();
                 break;
             }
-
-            case 5:{
+            case 5: {
+                HapusData();        // <-- fungsi hapus dipanggil di sini
+                break;
+            }
+            case 6: {
                 system("cls");
                 cout << "Menyimpan data sebelum keluar..." << endl;
                 simpanFile("data_bpjs.txt");
                 cout << "Program akan berhenti, keluar dari program.\n" << endl;
                 return 0;
             }
-            default:{
+            default: {
                 cout << "Pilihan tidak valid! Coba lagi." << endl;
             }
-        } 
-    } while (menu != 5);   
+        }
+    } while (menu != 6);
+
     return 0;
 }
